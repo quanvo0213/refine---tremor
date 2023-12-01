@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Grid,
   Title,
@@ -12,6 +12,7 @@ import {
 
 import { useApiUrl, useCustom } from "@refinedev/core";
 import dayjs from "dayjs";
+import axios from "axios";
 
 const query = {
   start: dayjs().subtract(7, "days").startOf("day"),
@@ -19,7 +20,7 @@ const query = {
 };
 
 import { KpiCard } from "./kpiCard";
-import { ChartView } from "./chartView";
+import { BarChartExample3 } from "./chartView";
 
 const calculatePercentage = (total: number, target: number): number => {
   return Math.round((total / target) * 100 * 100) / 100;
@@ -35,6 +36,49 @@ export const DashboardPage: React.FC = () => {
       query,
     },
   });
+
+  const data = JSON.stringify({
+    "type": "Execution",
+    "conditions": [
+      {
+        "key": "Team.id",
+        "operator": "=",
+        "value": "2"
+      }
+    ],
+    "functions": [],
+    "pagination": {
+      "page": 0,
+      "size": 30,
+      "sorts": [
+        "startTime,desc"
+      ]
+    },
+    "groupBys": []
+  });
+  
+  const config = {
+    method: 'post',
+    maxBodyLength: Infinity,
+    url: '/api/v1/search',
+    headers: { 
+      'Content-Type': 'application/json', 
+      'Authorization': 'Basic cXVhbi52b0BrYXRhbG9uLmNvbTpRdWFuMTIzKg==', 
+      'Cookie': 'segment-write-key=WvksC99SSzdqHZtCsnlZK2Iyh7KW3Tmk'
+    },
+    data : data
+  };
+  
+
+  useEffect(() => {
+    axios.request(config)
+    .then((response) => {
+      console.log(JSON.stringify(response.data));
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }, []);
 
   const { data: dailyOrders } = useCustom({
     url: `${API_URL}/dailyOrders`,
@@ -96,10 +140,7 @@ export const DashboardPage: React.FC = () => {
               />
             </Grid>
             <div className="mt-6">
-              <ChartView
-                revenue={dailyRevenue?.data.data ?? []}
-                orders={dailyOrders?.data.data ?? []}
-                customers={newCustomers?.data.data ?? []}
+              <BarChartExample3
               />
             </div>
           </TabPanel>
