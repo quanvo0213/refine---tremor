@@ -4,6 +4,13 @@ import { defineConfig } from "vite";
 export default defineConfig({
   plugins: [react()],
   server: {
-    port: 8444,
-  },
+    proxy: {
+      // Using the proxy instance
+      '/api': {
+        target: 'http://localhost:8443/api',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      },
+    }
+  }
 });
