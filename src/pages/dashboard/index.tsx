@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Grid,
   Title,
@@ -12,7 +12,6 @@ import {
 
 import { useApiUrl, useCustom } from "@refinedev/core";
 import dayjs from "dayjs";
-import axios from "axios";
 
 const query = {
   start: dayjs().subtract(7, "days").startOf("day"),
@@ -29,6 +28,7 @@ const calculatePercentage = (total: number, target: number): number => {
 
 export const DashboardPage: React.FC = () => {
   const API_URL = useApiUrl("metrics");
+  const [value, setValue] = useState({});
 
   const { data: dailyRevenue } = useCustom({
     url: `${API_URL}/dailyRevenue`,
@@ -84,29 +84,6 @@ export const DashboardPage: React.FC = () => {
       "status"
     ]
   });
-  
-  const config = {
-    method: 'post',
-    maxBodyLength: Infinity,
-    url: '/api/v1/search',
-    headers: { 
-      'Content-Type': 'application/json', 
-      'Authorization': 'Basic cXVhbi52b0BrYXRhbG9uLmNvbTpRdWFuMTIzKg==',
-      'Cookie': 'segment-write-key=WvksC99SSzdqHZtCsnlZK2Iyh7KW3Tmk'
-    },
-    data : data
-  };
-  
-
-  useEffect(() => {
-    axios.request(config)
-    .then((response) => {
-      console.log(response.data);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-  }, []);
 
   const { data: dailyOrders } = useCustom({
     url: `${API_URL}/dailyOrders`,
@@ -115,6 +92,21 @@ export const DashboardPage: React.FC = () => {
       query,
     },
   });
+
+  const { data: executions } = useCustom({
+    url: `/api/v1/search`,
+    method: "post",
+    config: {
+      payload: value,
+      headers: {
+        'Content-Type': 'application/json', 
+        'Authorization': 'Basic cXVhbi52b0BrYXRhbG9uLmNvbTpRdWFuMTIzKg==',
+        'Cookie': 'segment-write-key=WvksC99SSzdqHZtCsnlZK2Iyh7KW3Tmk'
+      }
+    },
+  });
+
+  console.log(executions);
 
   const { data: newCustomers } = useCustom({
     url: `${API_URL}/newCustomers`,
