@@ -7,7 +7,7 @@ export default defineConfig({
     proxy: {
       // Using the proxy instance
       '/api': {
-        target: 'http://localhost:8443/api',
+        target: 'https://testops.qa.katalon.com/api',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
