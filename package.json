@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "@heroicons/react": "^2.0.18",
+    "@heroicons/react": "^1.0.6",
     "@refinedev/cli": "^2.7.4",
     "@refinedev/core": "^4.28.2",
     "@refinedev/devtools": "^1.1.6",
@@ -15,9 +15,13 @@
     "@refinedev/react-table": "^5.0.0",
     "@refinedev/simple-rest": "^4.0.0",
     "@tremor/react": "^3.11.1",
+    "axios": "^1.6.2",
+    "date-fns": "^2.30.0",
+    "http-proxy-middleware": "^2.0.6",
     "i18next": "^20.1.0",
     "i18next-browser-languagedetector": "^6.1.1",
     "i18next-xhr-backend": "^3.2.2",
+    "query-string": "^7.1.3",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-i18next": "^11.8.11",
@@ -39,6 +43,7 @@
     "typescript": "^4.7.4",
     "vite": "^4.3.1"
   },
+  "proxy": "http://localhost:8443",
   "scripts": {
     "dev": "refine dev",
     "build": "tsc && refine build",

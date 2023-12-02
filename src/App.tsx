@@ -119,7 +119,6 @@ function App() {
             <UnsavedChangesNotifier />
             <DocumentTitleHandler />
           </Refine>
-          <DevtoolsPanel />
         </DevtoolsProvider>
       </RefineKbarProvider>
     </BrowserRouter>

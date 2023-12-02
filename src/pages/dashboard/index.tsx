@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Grid,
   Title,
@@ -19,7 +19,8 @@ const query = {
 };
 
 import { KpiCard } from "./kpiCard";
-import { ChartView } from "./chartView";
+import { BarChartExample3 } from "./chartView";
+import { DateRangePickerCustom } from "../../components/dateRangePicker";
 
 const calculatePercentage = (total: number, target: number): number => {
   return Math.round((total / target) * 100 * 100) / 100;
@@ -27,6 +28,7 @@ const calculatePercentage = (total: number, target: number): number => {
 
 export const DashboardPage: React.FC = () => {
   const API_URL = useApiUrl("metrics");
+  const [value, setValue] = useState({});
 
   const { data: dailyRevenue } = useCustom({
     url: `${API_URL}/dailyRevenue`,
@@ -36,6 +38,53 @@ export const DashboardPage: React.FC = () => {
     },
   });
 
+  const data = JSON.stringify({
+    "type": "Execution",
+    "conditions": [
+      {
+        "key": "startTime",
+        "operator": ">=",
+        "value": "2022-12-02T00:00:00Z"
+      },
+      {
+        "key": "startTime",
+        "operator": "<",
+        "value": "2023-12-02T00:00:00Z"
+      },
+      {
+        "key": "Project.id",
+        "operator": "=",
+        "value": "68"
+      }
+    ],
+    "functions": [
+      {
+        "key": "total",
+        "function": "count_distinct",
+        "parameters": [
+          "id"
+        ]
+      },
+      {
+        "key": "time",
+        "function": "group_by_quarter",
+        "parameters": [
+          "startTime"
+        ]
+      }
+    ],
+    "pagination": {
+      "page": 0,
+      "size": 300,
+      "sorts": [
+        "time, desc"
+      ]
+    },
+    "groupBys": [
+      "status"
+    ]
+  });
+
   const { data: dailyOrders } = useCustom({
     url: `${API_URL}/dailyOrders`,
     method: "get",
@@ -43,6 +92,21 @@ export const DashboardPage: React.FC = () => {
       query,
     },
   });
+
+  const { data: executions } = useCustom({
+    url: `/api/v1/search`,
+    method: "post",
+    config: {
+      payload: value,
+      headers: {
+        'Content-Type': 'application/json', 
+        'Authorization': 'Basic cXVhbi52b0BrYXRhbG9uLmNvbTpRdWFuMTIzKg==',
+        'Cookie': 'segment-write-key=WvksC99SSzdqHZtCsnlZK2Iyh7KW3Tmk'
+      }
+    },
+  });
+
+  console.log(executions);
 
   const { data: newCustomers } = useCustom({
     url: `${API_URL}/newCustomers`,
@@ -96,10 +160,11 @@ export const DashboardPage: React.FC = () => {
               />
             </Grid>
             <div className="mt-6">
-              <ChartView
-                revenue={dailyRevenue?.data.data ?? []}
-                orders={dailyOrders?.data.data ?? []}
-                customers={newCustomers?.data.data ?? []}
+              <DateRangePickerCustom
+              />
+            </div>
+            <div className="mt-6">
+              <BarChartExample3
               />
             </div>
           </TabPanel>
