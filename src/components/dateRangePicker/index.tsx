@@ -1,21 +1,23 @@
 import { DateRangePicker, DateRangePickerItem, DateRangePickerValue } from "@tremor/react";
 import { useState } from "react";
 import {
+  setDate,
   startOfToday,
   sub
 } from "date-fns";
 
-export function DateRangePickerCustom() {
-  const [value, setValue] = useState<DateRangePickerValue>({
-    from: new Date(2023, 1, 1),
-    to: new Date(),
-  });
+interface DateRangePickerCustomProps {
+  date: any;
+  setDate: any;
+}
+
+export function DateRangePickerCustom(props: DateRangePickerCustomProps) {
 
   return (
     <DateRangePicker
       className="max-w-md mx-auto"
-      value={value}
-      onValueChange={setValue}
+      value={props.date}
+      onValueChange={props.setDate}
     >
       <DateRangePickerItem value="tdy" from={startOfToday()}>
         Today
