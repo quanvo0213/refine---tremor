@@ -124,7 +124,6 @@ export const DashboardPage: React.FC = () => {
       payload: executionsGroupByQuery,
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Basic bmhpLmx5QGthdGFsb24uY29tOkFiYyFAIyQlXjA0MDQ=',
         'Cookie': 'segment-write-key=WvksC99SSzdqHZtCsnlZK2Iyh7KW3Tmk'
       }
     },
