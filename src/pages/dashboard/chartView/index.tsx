@@ -32,12 +32,10 @@ export const BarChartExample3 = (props: BarChartExample3Props) => {
   const convertDataForChart = (data: any) => {
     // extract data
   
-    console.log(data);
     const convertedData = data.map((element: any) => element?.content);
 
     const groupByData = groupBy(convertedData, 'time') || [];
     const timeRange = timeBetween(props.date.from, props.date.to, 'day');
-    console.log(groupByData);
 
     return timeRange.map((time: string | number, index: number) => {
       const newValue: any = {

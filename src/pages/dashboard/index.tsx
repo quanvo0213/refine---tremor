@@ -218,20 +218,6 @@ export const DashboardPage: React.FC = () => {
     },
   });
 
-  console.log(useCustom({
-    url: `/api/v1/search`,
-    method: "post",
-    config: {
-      payload: executionsQuery,
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Basic bmhpLmx5QGthdGFsb24uY29tOkFiYyFAIyQlXjA0MDQ=',
-        'Cookie': 'segment-write-key=WvksC99SSzdqHZtCsnlZK2Iyh7KW3Tmk'
-      }
-    },
-  }))
-
-
   if (!executionsChart || !executionsTable) return null;
   return (
     <main className="m-2">
